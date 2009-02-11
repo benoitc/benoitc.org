@@ -6,7 +6,9 @@ function(head, row, req, row_info) {
     return respondWith(req, {
         html: function() {
             if (head) {
-                return template(lib.templates.feeds.head, {});
+                return template(lib.templates.feeds.head, {
+                    assets: assetPath()
+                });
             } else if (row) {
                 return '';
             } else {
