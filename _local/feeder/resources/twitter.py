@@ -80,4 +80,5 @@ class TwitterResource(Resource):
         return self.get('/statuses/replies.json')
 
     def user_timeline(self, headers=None, **kwargs):
-        return self.get('/statuses/user_timeline.json') 
+        return self.get('/statuses/user_timeline.json', headers=headers,
+                **kwargs) 

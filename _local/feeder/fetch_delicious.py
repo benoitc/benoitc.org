@@ -14,7 +14,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
-
+from datetime import datetime 
 from xml.etree import ElementTree as ET
 
 from simplecouchdb import Server
@@ -37,8 +37,29 @@ FeedItem = db(FeedItem)
 
 
 def main():
-    posts = delicious.get_all()
-    print posts[0]
+    d = DateTimeProperty()
+    #posts = delicious.get_all()
+    tree = ET.parse('delicious.xml')
+    root = tree.getroot()
+    posts = []
+    for post in root:
+        entry = {}
+        for k, v in post.attrib.items():
+            if k == 'tag':
+                v = v.split(' ')
+            entry[k] = v
+        posts.append(entry)
+
+    for item in posts:
+        created_at = d._to_python(item['time'])
+        print created_at
+        link = FeedItem(
+                resource = 'delicious',
+                created_at = created_at,
+                fetched = datetime.utcnow(),
+                item = item)
+        print link._doc
+        link.save()
 
 if __name__ == '__main__':
     main()

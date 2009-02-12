@@ -30,10 +30,12 @@ try:
 except ImportError:
     import json
 
+from simplecouchdb.schema import *
 
 __version__ = '0.1'
 USER_AGENT = 'benoitc.org/%s' % __version__
 
+d = DateTimeProperty()
 
 class DeliciousResource(Resource):
 
@@ -49,12 +51,15 @@ class DeliciousResource(Resource):
 
     def get_all(self):
         rst = self.get('/v1/posts/all', meta='yes')
-        tree = ET.XML(str(rst))
+        tree = ET.XML(rst.encode('utf-8', 'replace'))
+
         posts = []
         for post in tree:
-            tag = post.get('tag', '')
-            post['tag'] = tag.split(' ')
-            post['time'] = DateTimeProperty.to_python(post['time'])
+            tag = post.attrib.get('tag', '')
+            if tag:
+                post.attrib['tag'] = tag.split(' ')
+            if 'time' in post.attrib:
+                post.attrib['time'] = d._to_python(post.attrib['time'])
             posts.append(post.attrib)
 
         return posts

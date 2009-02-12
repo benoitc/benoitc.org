@@ -44,7 +44,7 @@ twitter = TwitterResource('benoitc', 'as61zx')
 
 def main():
     for i in xrange(1, 17):
-        page = twitter.user_timeline(page=str(i))
+        page = twitter.user_timeline(page=i)
         for item in page:
             created_at = datetime.datetime.utcfromtimestamp(
                     calendar.timegm(rfc822.parsedate_tz(item['created_at'])))
@@ -53,10 +53,9 @@ def main():
                     created_at = created_at,
                     fetched = datetime.datetime.utcnow(),
                     item = item)
-            tweet.save()
+            tweet.save() 
         time.sleep(1)
-                    
-   
+       
 
 if __name__ == '__main__':
     main()

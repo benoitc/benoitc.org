@@ -1,0 +1,11 @@
+<% if (day_change) { %>
+<h2 class="date"><%= last_day %></h2>
+<% } %>
+<article>
+    <header>
+    <h2><a href="<%= item.url %>"><%= resource_title %></a></h2>
+    </header>
+    
+    <p><%= item.text %></p>
+    
+</article>
