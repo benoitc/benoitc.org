@@ -32,12 +32,12 @@
 
 
 <body>
-    <div id="container">
+        <header>
         <h1>
             <a rel="me author" href="<%= assets %>/about.html">Benoît Chesneau</a>
         </h1>
-
-        <section id="edit">
+        </header>
+        <div id="edit">
             <form id="fedit" name="fedit" action="new.html">
                 <ol>
                     <li><label for="title">Titre<label><input type="text"
@@ -52,17 +52,16 @@
                 <p><input type="submit" name="save" id="save" value="Save">
             or <a href="cancel">Cancel</a></p>
             </form>
-            <div id="preview"></div>
-        </section>
+            <div id="mdpreview"></div>
+        </div>
 
-        <footer>
+        <footer id="main-footer">
             <p class="copyright">Copyright &copy; 2009 by <a rel="me author"
                 href="apropos.html">Benoît Chesneau</a> </p>
 
         
         </footer>
 
-    </div>
     
 </body>
 
@@ -73,6 +72,8 @@
 
     <script src="<%= assets %>/js/textarea.jquery.js"></script>
 
-
+    <script>
+        $("#content").markdownEditor();
+    </script>
 
 </html>

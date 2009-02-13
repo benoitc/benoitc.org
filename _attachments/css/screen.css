@@ -3,6 +3,11 @@ body {
     color: #000;
 }
 
+#container {
+    width: 100%;
+}
+
+
 a {
     color: #14456e;
 }
@@ -19,15 +24,18 @@ body {
     font-style:normal;
     font-variant:normal;
     font-weight:normal;
-    line-height:1.75;
-    margin:1.75em auto;
-    width:40.8em;
+    line-height: 18px;
     font-size: 12px;
 }
 
 
 
 img { border: none; }
+
+#main-footer {
+    clear: both;
+    width: 100%;
+}
 
 #edit {
     height: 100%;
