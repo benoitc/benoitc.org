@@ -1,0 +1,81 @@
+body {
+    background-color: #e7e7e7;
+    color: #000;
+}
+
+a {
+    color: #14456e;
+}
+h2, h3 {firehose...omark.org (line 14)
+font-size:medium;
+}
+
+body {
+    -x-system-font:none;
+    font-family:'Gill Sans','Gill Sans MT',Verdana,sans-serif;
+    font-size:medium;
+    font-size-adjust:none;
+    font-stretch:normal;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:normal;
+    line-height:1.75;
+    margin:1.75em auto;
+    width:40.8em;
+    font-size: 12px;
+}
+
+
+
+img { border: none; }
+
+#edit {
+    height: 100%;
+    overflow:hidden;
+}
+#edit #fedit {
+    display: block;
+    position: relative;
+     width: 50%;
+    float: left;
+    height: 100%;
+
+}
+
+#edit #preview {
+    display: block;
+    position: relative;
+    width: 48%;
+    float: right;
+    height: 100%;     
+    overflow: auto;    
+}
+
+form li {
+    padding: 2px 0;
+    /*clear: both;*/
+    margin: 0;
+}
+form li * {
+    vertical-align: middle
+}
+form label {
+    display: block;
+    width: 14em;
+    height: 11px;
+    float: left;
+    padding: 0 1em 3px 0;
+}
+input[type='text'], 
+input[type='password'],
+select {
+    width: 174px;
+    border: 1px solid;
+    margin: 0;
+}
+
+textarea {
+    width: 99%;
+    border: 1px solid;
+    height: 280px;
+}

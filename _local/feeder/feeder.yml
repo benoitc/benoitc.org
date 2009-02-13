@@ -1,0 +1,10 @@
+couchdb:
+    server: 'http://127.0.0.1:5984'
+    dbname: 'benoitc-dev'
+pid: /home/benoitc/.feeder.pid
+run: /home/benoitc/.feeder
+
+friendfeed:
+    username: benoitc
+    remote_key: gnaw308bee
+

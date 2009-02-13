@@ -3,9 +3,12 @@
 <% } %>
 <article>
     <header>
-    <h2><a href="<%= item.url %>"><%= resource_title %></a></h2>
+    <hp><a href="<%= item.link %>" title="<%= item.title %>"><img
+            src="<%= item.service.iconUrl %>" alt=""></a> - <a
+            href="<%= item.service.profileUrl %>"><%= item.service.id
+            %></a></p>
     </header>
     
-    <p><%= item.text %></p>
+    <p><%= item.title %></p>
     
 </article>
