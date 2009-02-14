@@ -6,29 +6,29 @@
 
 (function($) {
 
-    $.fn.markdownEditor = function(options) {
+    $.fn.TextArea = function(options) {
         options = options || {};
 
         var defaults = {
             tab_spacing: true,
             tab_char: 4,
             lineHeight: 16,
-            preview: "#mdpreview"
+            change_callback: null        
         };
 
         var options = $.extend(defaults, options);
         return this.each(function() {
-            new MarkdownEditor(this, options);
+            new TextArea(this, options);
         });
     }
 
-    function MarkdownEditor(el, options) {
-        return this instanceof MarkdownEditor
+    function TextArea(el, options) {
+        return this instanceof TextArea
         ? this.init(el, options)
-        : MarkdownEditor(el, opttions);
+        : TextArea(el, opttions);
     }
 
-    $.extend(MarkdownEditor.prototype, {
+    $.extend(TextArea.prototype, {
 
         init: function(el, options) {
             this.el = $(el);
@@ -36,6 +36,8 @@
 
             this.element = this.el[0];
             this.options = options;
+            this._change_callback = options.change_callback;
+
             this.bindMethodsToObj("handleKey");
 
             // detection of browser for webkit
@@ -66,16 +68,15 @@
 
             this.el.keydown(this.handleKey);
 
-            if (typeof this.preview != "undefined") {
-                this.converter = new Showdown.converter;
-                var self = this;
-                this.converter_callback = function() {
-                    self.preview[0].innerHTML = self.converter.makeHtml(self.el.val());
+            var self = this;
+            this.change_callback = function() {
+                if (self._change_callback) {
+                    self._change_callback(self.element.value);
                 }
-                this.converter_callback();  
-                this.el.keydown(this.converter_callback).keyup(this.converter_callback);
+                return;
             }
-                
+            this.change_callback();  
+            this.el.keydown(this.change_callback).keyup(this.change_callback);
         },
 
         handleKey: function(e) {

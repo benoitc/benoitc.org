@@ -11,7 +11,7 @@ body {
 a {
     color: #14456e;
 }
-h2, h3 {firehose...omark.org (line 14)
+h2, h3 {
 font-size:medium;
 }
 
@@ -59,7 +59,10 @@ img { border: none; }
     overflow: auto;    
 }
 
-form li {
+form ol {
+    list-style: none;
+}
+form ol li {
     padding: 2px 0;
     /*clear: both;*/
     margin: 0;
@@ -82,8 +85,9 @@ select {
     margin: 0;
 }
 
-textarea {
+#fedit textarea {
     width: 99%;
+    height: 100%;
     border: 1px solid;
     height: 280px;
 }

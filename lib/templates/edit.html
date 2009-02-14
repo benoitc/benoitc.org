@@ -39,16 +39,14 @@
         </header>
         <div id="edit">
             <form id="fedit" name="fedit" action="new.html">
-                <ol>
-                    <li><label for="title">Titre<label><input type="text"
-                        name="title" id="title" value=""></li>
-            
-                    <li><textarea name="content" id="content" cols="80"
-                    rows="20"></textarea></li>
+                <p><label for="title">Titre<label><input type="text"
+                        name="title" id="title" value=""></p>
+                        
+                <textarea name="content" id="content" cols="80"
+                    rows="20"></textarea>
 
-                    <li><label for="labels">Libellés</label><input type="text"
-                name="labels" id="labels" value=""></li>
-                </ol>
+                <p><label for="labels">Libellés</label><input type="text"
+                name="labels" id="labels" value=""></p>
                 <p><input type="submit" name="save" id="save" value="Save">
             or <a href="cancel">Cancel</a></p>
             </form>
@@ -71,9 +69,9 @@
     <script src="<%= assets %>/js/showdown.js"></script>
 
     <script src="<%= assets %>/js/textarea.jquery.js"></script>
-
+    <script src="<%= assets %>/js/editor.js"></script>
     <script>
-        $("#content").markdownEditor();
+        new Editor() 
     </script>
 
 </html>
