@@ -1145,6 +1145,10 @@ var _DoAutoLinks = function(text) {
 			return _EncodeEmailAddress( _UnescapeSpecialChars(m1) );
 		}
 	);
+	
+	/* wiki links */
+    //text = text.replace(/(^| )(\b[A-Z][a-z]+[A-Z][\w\u00A1-\uFFFF]+\b)/, "<a href=\""+site.url+"/$1\">$1</a>");
+    //text = text.replace(/\[\[\s*([^\]]+)\]\]/, "<a href=\""+site.url+"/$1\">$1</a>")
 
 	return text;
 }

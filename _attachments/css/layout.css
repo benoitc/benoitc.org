@@ -50,7 +50,7 @@ img { border: none; }
 
 }
 
-#edit #preview {
+#edit #mdpreview {
     display: block;
     position: relative;
     width: 48%;

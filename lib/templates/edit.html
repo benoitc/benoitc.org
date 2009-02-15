@@ -23,9 +23,10 @@
     <link rel="home index" href="http://benoitc.org/" type="text/html">
     <link rel="me author" href="http://benoitc.org/apropos.html" type="text/html">
 
-    <link rel="stylesheet" href="<%= assets %>/css/screen.css" type="text/css" media="screen, projection" />
-
+    <link rel="stylesheet" href="<%= assets %>/css/layout.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="<%= assets %>/css/default.css" type="text/css" media="screen, projection" />
     
+    <link rel="stylesheet" href="<%= assets %>/css/typography.css" type="text/css" media="screen, projection" />
 
 
 </head>
@@ -38,7 +39,8 @@
         </h1>
         </header>
         <div id="edit">
-            <form id="fedit" name="fedit" action="new.html">
+            <form id="fedit" name="fedit" action="new.html"
+                method="post">
                 <p><label for="title">Titre<label><input type="text"
                         name="title" id="title" value=""></p>
                         
@@ -65,13 +67,63 @@
 
     <script src="/_utils/script/json2.js"></script>
     <script src="/_utils/script/jquery.js"></script>
+    <script src="/_utils/script/jquery.cookies.js"></script>
     <script src="/_utils/script/jquery.couch.js"></script>
     <script src="<%= assets %>/js/showdown.js"></script>
 
     <script src="<%= assets %>/js/textarea.jquery.js"></script>
+    <script src="<%= assets %>/js/jquery.couchapp.js"></script>
     <script src="<%= assets %>/js/editor.js"></script>
+    <script src="<%= assets %>/js/blog.js"></script>
     <script>
-        new Editor() 
+        $(document).ready(function() {
+
+            $.CouchApp(function(app) {
+                app.loggedInNow(function(login) {
+                    // w00t, we're logged in (according to the cookie)
+                    $("#header").prepend('<span id="login">'+login+'</span>');
+                    // setup CouchApp document/form system, adding app-specific callbacks
+                    // rename docForm?
+                    var B = new Blog(app);
+                    // thin controller - move to B?
+
+                    var postForm = app.docForm("form#new-post", {
+                        id : <%= docid %>,
+                        fields : ["title", "body", "tags"],
+                        onLoad : function(doc) {
+                            if (doc._id) {
+
+                            }
+                        },
+                        beforeSave : function(doc) {
+                            doc.html = B.formatBody(doc.content);
+                            doc.format = "markdown";
+
+                            if(doc.labels) {
+                                doc.labels = doc.labels.split(",");
+                                for(var idx in doc.labels) {
+                                    doc.labelsidx] = $.trim(doc.labels[idx]);
+                                }
+                            } 
+                        },
+                        success : function(resp) {
+                           /* $("#saved").text("Saved _rev: "+resp.rev).fadeIn(500).fadeOut(3000);
+                            B.editing(resp.id);*/
+                        }
+                    });  
+
+                    new Editor(); 
+                    }, function() {
+                    // callback
+                    $('body').append('<a href="<%= assets %>/account.html#'+document.location+'">redirect</a>');
+                    var absurl = $('body a:last')[0].href;
+                    document.location = absurl;
+                });
+            });
+            
+            
+            
+        });
     </script>
 
 </html>

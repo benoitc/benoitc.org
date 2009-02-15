@@ -147,7 +147,7 @@ class FriendFeedService(object):
                 update_ids = []
                 docs = []
                 for entry in list(g):
-                    entry['_id'] = uuid.UUID(entry.pop('id'))
+                    entry['_id'] = uuid.UUID(entry.pop('id')).hex
                     entry['doc_type'] = 'FeedItem'
                     update_ids.append(entry['_id'])
                     docs.append(entry)
@@ -157,8 +157,8 @@ class FriendFeedService(object):
                     docs[i].update({'_rev': row.value('_rev')})
             else:
                 for entry in list(g):
-                    entry['_id'] = uuid.UUID(entry.pop('id'))
-        db.save(entries)
+                    entry['_id'] = uuid.UUID(entry.pop('id')).hex
+        self.db.save(entries)
         f = open(self.token_file, 'w')
         f.write(self.token)
         f.close()
