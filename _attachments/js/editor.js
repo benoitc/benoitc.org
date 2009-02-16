@@ -5,20 +5,20 @@ function Editor() {
     }
 
     
-    $("#content").TextArea({
+    $("#body").TextArea({
         change_callback: converter_callback 
     });
 
     var lastRoomleft = 0;
-    var bottomEditHeight = $('#main-footer').offset().top - $('#content').offset().top -
-            $("#content").height();
+    var bottomEditHeight = $('#main-footer').offset().top - $('#body').offset().top -
+            $("#body").height();
     
     $(window).resize(resizePanes);
     
     window.setInterval(resizePanes, 250);
     function resizePanes() {
         var roomLeft =  $(window).height() - $('#main-footer').height() 
-         - $('#content').offset().top - bottomEditHeight;
+         - $('#body').offset().top - bottomEditHeight;
         
         if (roomLeft < 0)
             roomLeft = 0;
@@ -27,7 +27,7 @@ function Editor() {
 
         lastRoomLeft = roomLeft;
         
-        $('#content').height(roomLeft);
+        $('#body').height(roomLeft);
         $('#mdpreview').height(roomLeft);  
             
     }

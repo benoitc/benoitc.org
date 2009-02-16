@@ -29,16 +29,16 @@ function (newDoc, oldDoc, userCtx) {
     }
   }
 
-  /*
+  
   // general timestamps
   if (oldDoc && oldDoc.created_at != newDoc.created_at) 
     forbidden("You may not change the created_at field of a doc.");
   
   // this ensures that the date will be UTC, parseable, and collate correctly
-  if (newDoc.created_at) {
-    if (!newDoc.created_at.match(/\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} \+0000/))
-      forbidden("Sorry, "+newDoc.created_at+" is not a valid date format. Try: 2008/12/10 21:16:02 +0000");
-  }
+  //if (newDoc.created_at) {
+  //  if (!newDoc.created_at.match(/\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} \+0000/))
+  //    forbidden("Sorry, "+newDoc.created_at+" is not a valid date format. Try: 2008/12/10 21:16:02 +0000");
+  //}
     
   if (type == 'post') {
     // post required fields
@@ -61,8 +61,8 @@ function (newDoc, oldDoc, userCtx) {
     require(newDoc.comment, "Comments require a comment field.");
     require(newDoc.format, "Comments require a format field.");
     if (newDoc.commenter && newDoc.commenter.url) {*/
-   //   require(newDoc.commenter.url.match(/^https?:\/\/[^.]*\..*/), "Commenter URL is not valid.");      
-   // }
-  //}
+      require(newDoc.commenter.url.match(/^https?:\/\/[^.]*\..*/), "Commenter URL is not valid.");      
+    }
+  }
   return true;
 }

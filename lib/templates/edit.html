@@ -21,7 +21,7 @@
     <link rel="openid.server" href="http://www.myopenid.com/server">
     <link rel="openid.delegate" href="http://bchesneau.myopenid.com/">
     <link rel="home index" href="http://benoitc.org/" type="text/html">
-    <link rel="me author" href="http://benoitc.org/apropos.html" type="text/html">
+    <link rel="me author" href="http://benoitc.org/benoitc.html" type="text/html">
 
     <link rel="stylesheet" href="<%= assets %>/css/layout.css" type="text/css" media="screen, projection" />
     <link rel="stylesheet" href="<%= assets %>/css/default.css" type="text/css" media="screen, projection" />
@@ -35,31 +35,30 @@
 <body>
         <header>
         <h1>
-            <a rel="me author" href="<%= assets %>/about.html">Benoît Chesneau</a>
+            <a rel="me author" href="<%= assets %>/benoitc.html">Benoît Chesneau</a>
         </h1>
         </header>
         <div id="edit">
+            <h2>Nouvel article</h2>
             <form id="fedit" name="fedit" action="new.html"
                 method="post">
                 <p><label for="title">Titre<label><input type="text"
                         name="title" id="title" value=""></p>
                         
-                <textarea name="content" id="content" cols="80"
+                <textarea name="body" id="body" cols="80"
                     rows="20"></textarea>
 
                 <p><label for="labels">Libellés</label><input type="text"
                 name="labels" id="labels" value=""></p>
                 <p><input type="submit" name="save" id="save" value="Save">
-            or <a href="cancel">Cancel</a></p>
+            or <a href="cancel">Cancel</a> <span id="saved" style="display:none;">Saved</span></p>
             </form>
             <div id="mdpreview"></div>
         </div>
 
         <footer id="main-footer">
             <p class="copyright">Copyright &copy; 2009 by <a rel="me author"
-                href="apropos.html">Benoît Chesneau</a> </p>
-
-        
+                href="benoitc.html">Benoît Chesneau</a> </p>
         </footer>
 
     
@@ -75,6 +74,8 @@
     <script src="<%= assets %>/js/jquery.couchapp.js"></script>
     <script src="<%= assets %>/js/editor.js"></script>
     <script src="<%= assets %>/js/blog.js"></script>
+    <script src="<%= assets %>/js/urlify.js"></script>
+
     <script>
         $(document).ready(function() {
 
@@ -85,30 +86,54 @@
                     // setup CouchApp document/form system, adding app-specific callbacks
                     // rename docForm?
                     var B = new Blog(app);
-                    // thin controller - move to B?
 
-                    var postForm = app.docForm("form#new-post", {
+                    var postForm = app.docForm("form#fedit", {
                         id : <%= docid %>,
-                        fields : ["title", "body", "tags"],
+                        fields : ["title", "body", "labels"],
+                        template : {
+                            doc_type : "post",
+                            format : "markdown",
+                            author : login
+                        },
                         onLoad : function(doc) {
                             if (doc._id) {
-
+                                $("#edit h2").html('Édition de ' + B.link_for(doc._id));
                             }
+
+                            $('#save').click(function() {
+                                if (!$("#title").val().match(/^['\-\"\/ !?&.,;:@\(\)\w\u00A1-\uFFFF]+$/i)) {
+                                    alert("Titre invalide.");
+                                    return false;
+                                }
+                            });
+
                         },
                         beforeSave : function(doc) {
-                            doc.html = B.formatBody(doc.content);
-                            doc.format = "markdown";
+                            doc.html = B.formatBody(doc.body);
 
+
+                            if (!doc.created_at) {
+                                doc.created_at = new Date().rfc3339();
+                            }
+
+                            if (!doc.slug) {
+                                doc.slug = doc.created_at.slice(0, 10) + "_" +
+                                   URLify(doc.title, 255);
+                                doc._id = doc.slug;
+                            }
+
+
+                            doc.updated = new Date().rfc3339();
                             if(doc.labels) {
                                 doc.labels = doc.labels.split(",");
                                 for(var idx in doc.labels) {
-                                    doc.labelsidx] = $.trim(doc.labels[idx]);
+                                    doc.labels[idx] = $.trim(doc.labels[idx]);
                                 }
                             } 
                         },
                         success : function(resp) {
-                           /* $("#saved").text("Saved _rev: "+resp.rev).fadeIn(500).fadeOut(3000);
-                            B.editing(resp.id);*/
+                           $("#saved").text("Saved _rev: "+resp.rev).fadeIn(500).fadeOut(3000);
+                           $("#edit h2").html('Édition de ' + B.link_for(resp.id));
                         }
                     });  
 
@@ -120,10 +145,7 @@
                     document.location = absurl;
                 });
             });
-            
-            
-            
+        
         });
     </script>
-
 </html>

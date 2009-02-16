@@ -76,7 +76,9 @@
                 return;
             }
             this.change_callback();  
-            this.el.keydown(this.change_callback).keyup(this.change_callback);
+            this.el.keyup(this.change_callback);
+            this.el.bind('paste', this.change_callback);
+            this.el.bind('input', this.change_callback);
         },
 
         handleKey: function(e) {
