@@ -1,7 +1,7 @@
 function Editor() {
     var converter = new Showdown.converter;
     var converter_callback = function(value) {  
-              $('#mdpreview').html(converter.makeHtml(value));  
+              $('#mdpreview')[0].innerHTML = converter.makeHtml(value);  
     }
 
     
@@ -10,6 +10,7 @@ function Editor() {
     });
 
     var lastRoomleft = 0;
+    var lastPRoomLef = 0;
     var bottomEditHeight = $('#main-footer').offset().top - $('#body').offset().top -
             $("#body").height();
     
@@ -19,6 +20,7 @@ function Editor() {
     function resizePanes() {
         var roomLeft =  $(window).height() - $('#main-footer').height() 
          - $('#body').offset().top - bottomEditHeight;
+        var proomLeft = $(window).height()
         
         if (roomLeft < 0)
             roomLeft = 0;

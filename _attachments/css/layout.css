@@ -1,5 +1,5 @@
 body {
-    background-color: #e7e7e7;
+    background-color: #FFFFFF url(../img/bg.gif) repeat-x scroll center top; 
     color: #000;
 }
 
@@ -55,20 +55,15 @@ img { border: none; }
     position: relative;
     width: 48%;
     float: right;
-    height: 100%;     
+    height: 100%;
+    margin:0;
+   padding: 0; 
     overflow: auto;    
 }
 
-form ol {
-    list-style: none;
-}
-form ol li {
-    padding: 2px 0;
-    /*clear: both;*/
-    margin: 0;
-}
-form li * {
-    vertical-align: middle
+#fedit p {
+    display: block;
+    padding-bottom: 5px;
 }
 form label {
     display: block;

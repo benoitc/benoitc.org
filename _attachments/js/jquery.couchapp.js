@@ -162,7 +162,7 @@
               $.cookies.set("login", login, '/'+dbname)
               win && win(login);
             } else {
-              $.cookies.set("login" "", '/'+dbname)
+              $.cookies.set("login", "", '/'+dbname)
               fail && fail(s, e, r);
             }
           }});        

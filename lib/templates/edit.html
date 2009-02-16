@@ -34,6 +34,7 @@
 
 <body>
         <header>
+        <div id
         <h1>
             <a rel="me author" href="<%= assets %>/benoitc.html">Benoît Chesneau</a>
         </h1>
@@ -42,16 +43,21 @@
             <h2>Nouvel article</h2>
             <form id="fedit" name="fedit" action="new.html"
                 method="post">
-                <p><label for="title">Titre<label><input type="text"
-                        name="title" id="title" value=""></p>
+                    
+                
                         
                 <textarea name="body" id="body" cols="80"
                     rows="20"></textarea>
 
+                <p><label for="title">Titre<label><input type="text"
+                        name="title" id="title" value=""></p>
+
                 <p><label for="labels">Libellés</label><input type="text"
                 name="labels" id="labels" value=""></p>
+                
+                
                 <p><input type="submit" name="save" id="save" value="Save">
-            or <a href="cancel">Cancel</a> <span id="saved" style="display:none;">Saved</span></p>
+                or <a href="<%= index %>">Cancel</a> <span id="saved" style="display:none;">Saved</span></p>
             </form>
             <div id="mdpreview"></div>
         </div>
@@ -99,26 +105,25 @@
                             if (doc._id) {
                                 $("#edit h2").html('Édition de ' + B.link_for(doc._id));
                             }
-
                             $('#save').click(function() {
-                                if (!$("#title").val().match(/^['\-\"\/ !?&.,;:@\(\)\w\u00A1-\uFFFF]+$/i)) {
-                                    alert("Titre invalide.");
+                                if (!$('#title').val()) {
+                                    alert('Title invalid');
                                     return false;
                                 }
                             });
-
                         },
                         beforeSave : function(doc) {
-                            doc.html = B.formatBody(doc.body);
+                            if (doc.body)
+                                doc.html = B.formatBody(doc.body);
 
 
                             if (!doc.created_at) {
                                 doc.created_at = new Date().rfc3339();
                             }
 
-                            if (!doc.slug) {
-                                doc.slug = doc.created_at.slice(0, 10) + "_" +
-                                   URLify(doc.title, 255);
+                            if (!doc.slug && doc.title) {
+                                doc.slug = URLify(doc.title, 255) + "_" 
+                                + doc.created_at.slice(0, 10).replace(/\-*/g, '');
                                 doc._id = doc.slug;
                             }
 
