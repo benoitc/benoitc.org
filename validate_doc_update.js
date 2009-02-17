@@ -1,5 +1,5 @@
 function (newDoc, oldDoc, userCtx) {
-  var type = (oldDoc || newDoc)['type'];
+  var doc_type = (oldDoc || newDoc)['type'];
   var author = (oldDoc || newDoc)['author'];
 
   function forbidden(message) {    
@@ -21,7 +21,7 @@ function (newDoc, oldDoc, userCtx) {
     
     if (userCtx.roles.indexOf('_admin') == -1) {
       // admin can edit anything, only check when not admin...
-      if (oldDoc && oldDoc.author != newDoc.author) 
+      if (!newDoc._deleted && (oldDoc && oldDoc.author != newDoc.author))
         forbidden("You may not change the author of a doc.");
 
       if (author != userCtx.name)
@@ -31,7 +31,7 @@ function (newDoc, oldDoc, userCtx) {
 
   
   // general timestamps
-  if (oldDoc && oldDoc.created_at != newDoc.created_at) 
+  if (!newDoc._deleted && (oldDoc && oldDoc.created_at != newDoc.created_at)) 
     forbidden("You may not change the created_at field of a doc.");
   
   // this ensures that the date will be UTC, parseable, and collate correctly
@@ -40,7 +40,7 @@ function (newDoc, oldDoc, userCtx) {
   //    forbidden("Sorry, "+newDoc.created_at+" is not a valid date format. Try: 2008/12/10 21:16:02 +0000");
   //}
     
-  if (type == 'post') {
+  if (doc_type == 'post') {
     // post required fields
     require(author, "Posts must have an author.")
     require(newDoc.body, "Posts must have a body field")
@@ -51,7 +51,7 @@ function (newDoc, oldDoc, userCtx) {
     require(newDoc.slug == newDoc._id, "Post slugs must be used as the _id.")
     require(newDoc.created_at, "Posts must have a created_at date.");
 
-  } else if (type == 'comment') {
+  } else if (doc_type == 'comment') {
     // comment required fields
     require(newDoc.created_at, "Comments must have a created_at date.");
     require(newDoc.post_id, "Comments require a post_id.");
