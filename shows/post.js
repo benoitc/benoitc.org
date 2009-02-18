@@ -11,8 +11,8 @@ function(doc, req) {
   if (doc.labels) {
       for(var i=0; i<doc.labels.length; i++) {
           labels.push('<a href="' +
-                  listPath('index','archives',{descending:true, limit:25, key:doc.labels[i]})
-                  + '">'+ doc.labels[i] + '</a>');
+                  listPath('search','topics',{descending:true, limit:25, key:doc.labels[i]})
+                  + '" rel="tag">'+ doc.labels[i] + '</a>');
       }
   }
   // we only show html

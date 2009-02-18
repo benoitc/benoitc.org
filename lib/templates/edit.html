@@ -40,8 +40,6 @@
             <h2>Nouvel article</h2>
             <form id="fedit" name="fedit" action="new.html"
                 method="post">
-                    
-                
                         
                 <textarea name="body" id="body" cols="80"
                     rows="20"></textarea>
@@ -110,8 +108,8 @@
                             }
 
                             if (!doc.slug && doc.title) {
-                                doc.slug = URLify(doc.title, 255) + "_" 
-                                + doc.created_at.slice(0, 10).replace(/\-*/g, '');
+                                doc.slug = doc.created_at.slice(0, 10).replace(/\-*/g, '') 
+                                + "_" + URLify(doc.title, 255);
                                 doc._id = doc.slug;
                             }
 
@@ -124,7 +122,7 @@
                             } 
                         },
                         success : function(resp) {
-                           $("#saved").text("Saved _rev: "+resp.rev).fadeIn(500).fadeOut(3000);
+                           $("#saved").text("Enregistré _rev: "+resp.rev).fadeIn(500).fadeOut(3000);
                            $("#edit h2").html('Édition de ' + B.link_for(resp.id));
                         }
                     });  

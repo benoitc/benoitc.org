@@ -42,9 +42,11 @@
                 <p><a rel="me author" href="http://benoitc.org/benoitc.html">Benoît Chesneau</a></p>       
             </header>    
             <%= doc.html %>
+            <% if (labels) { %>
             <footer>
             <p>Cette entrée a été marquée <%= labels %> — Suivez un un des libellés pour obtenir d'autres articles ou essais en relation.</p>
             </footer>
+            <% } %>
         </article>
         </section>
         <section id="comments">

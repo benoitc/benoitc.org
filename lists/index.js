@@ -9,65 +9,39 @@ function(head, row, req, row_info) {
     
   var indexPath = listPath('index','recent-posts',{descending:true, limit:8});
   var feedPath = listPath('index','recent-posts',{descending:true, limit:8, format:"atom"});
-  var archivesPath = listPath('index','archives',{descending:true, limit:25});
+  var archivesPath = listPath('index','recent-posts',{descending:true, limit:25});
   var streamPath = listPath('firehose','stream',{descending:true, limit:25});
   return respondWith(req, {
     html: function() {
         if (head) {
             return template(lib.templates.index.head, {
-                assets: assetPath()
+                assets: assetPath(),
+                archivesPath: archivesPath,
+                streamPath: streamPath,
+                feedParg: feedPath
             });
         } else if (row) {
-            if (req.path[4] == 'recent-posts' && row_info.row_number == 8) {
-               return {stop:true};
-            }
-
-            var pd, ld = [];
-            var day_change = false;
-            var month_change = false;
-
-            if (!row_info.first_key) {
-                day_change = true;
-                month_change = true;
-                ld = row.key.split('T');
-            } else {
-                if (!row_info.prev_key) {
-                    pd = row_info.first_key.split('T');
-                    ld = row.key.split('T');
-                    month_change = true;
-                } else {
-                    pd = row_info.prev_key.split("T");
-                    ld = row.key.split("T");
-                }
-
-                if (ld[0] != pd[0]) {
-                    day_change = true;
-                    if (ld[0].slice(5, 7) != pd[0].slice(5, 7)) {
-                        month_change = true;
-                    }
-                } 
-            }
-
-            var month = ld[0].slice(5, 7);
-            var lc_month = locales.fr.months[month];
+            if (!req.query.limit && row_info.row_number == 7)
+                return {stop: true}
+                
             var fcreated_at = new Date().setRFC3339(row.value.created_at).toLocaleString();
             return template(lib.templates.index.row, {
                     post: row.value,
                     fcreated_at: fcreated_at,
                     link: showPath('post', row.id),
-                    last_day: ld[0],
-                    month: lc_month,
-                    day: ld[0].slice(8, 10),
-                    day_change: day_change,
-                    month_change: month_change,
-                    row_info: row_info,
                     assets: assetPath(),
                     feedPath: feedPath,
-                    streamPath: streamPath
+                    streamPath: streamPath,
+                    test: req.rawpath,
             });
         } else {
+            var nextPath = listPath('index','recent-posts', {
+                    startkey:row_info.prev_key, 
+                    descending:true, 
+                    limit:25 });
+
             return template(lib.templates.index.tail, {
-                archivesPath: archivesPath,
+                nextPath: nextPath,
                 assets: assetPath()
             });
         }
@@ -97,6 +71,23 @@ function(head, row, req, row_info) {
       } else {
         return {body: "</feed>"};
       }
+    },
+    xml: function() {
+      //sitemap
+       if (head) {
+        return {body:'<?xml version="1.0" encoding="UTF-8"?>\n'+
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>'};
+      } else if (row) {
+        var url = <url/>;
+        url.loc = makeAbsolute(req, showPath('post', row.id));
+        url.lastmod = row.value.created_at;
+        url.changefreq = "daily";
+        url.priority = "0.5";
+        return {body:url};
+      } else {
+        return {body: "</urlset>"};
+      }
+
     }
   })
 };
