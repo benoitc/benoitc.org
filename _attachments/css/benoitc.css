@@ -238,7 +238,6 @@ header.page #mainav {
 #mainav a,
 #mainav li {
 	font-size: 90%;
-	line-height: 16px;
 }
 #mainav a {
 	text-decoration: non ;
@@ -278,17 +277,7 @@ header.about p {
 	margin:0;
 	text-transform:capitalize;
 }
-header.about a, 
-header.about a:link,
-header.about a:visited {
-	background:#FFFFFF none repeat scroll 0 0;
-	color:#444455;
-}
-header.about a:hover {
-	background:#000 none repeat scroll 0 0;
-	color:#fff;
-	text-decoration:none;
-}
+
 /* COMMENTS */
 
 ol.comments {

@@ -52,8 +52,15 @@
     <script src="/_utils/script/jquery.js"></script>
     <script src="/_utils/script/jquery.cookies.js"></script>
     <script src="/_utils/script/jquery.couch.js"></script>
-
-
+    <script>
+    // ugly hack for rewriting
+        $.extend({
+            blog: {
+                dbname: "benoitc-dev",
+                dname: "benoitc"
+            }
+        });
+    </script>
     <script src="js/jquery.couchapp.js"></script>
     
     <script>

@@ -12,7 +12,7 @@ function(doc, req) {
   if (doc.labels) {
       for(var i=0; i<doc.labels.length; i++) {
           labels.push('<a href="' +
-                  listPath('search','topics',{descending:true, limit:25, key:doc.labels[i]})
+                  listPath('search','topics',{limit:25, key:doc.labels[i]})
                   + '" rel="tag">'+ doc.labels[i] + '</a>');
       }
   }
