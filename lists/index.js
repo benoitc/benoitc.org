@@ -69,7 +69,7 @@ function(head, row, req, row_info) {
         return {body: "</feed>"};
       }
     },
-    xml: function() {
+    sitemap: function() {
       //sitemap
        if (head) {
         return {body:'<?xml version="1.0" encoding="UTF-8"?>\n'+
