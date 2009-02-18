@@ -1,0 +1,17 @@
+syntax: glob
+*.orig
+*.rej
+*~
+*.o
+*.pyc
+*.pyo
+tests/*.err
+*.swp
+store/*
+*.DS_Store
+*.beam
+*.log
+
+syntax: regexp
+.*\#.*\#$
+
