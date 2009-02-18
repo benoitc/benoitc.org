@@ -1,5 +1,6 @@
 function(doc, req) {  
   // !json lib.templates.edit
+  // !json blog
   // !code lib.helpers.ejs.ejs
   // !code lib.helpers.ejs.view
   // !code lib.helpers.template2
@@ -10,6 +11,7 @@ function(doc, req) {
     doc : doc,
     docid : toJSON((doc && doc._id) || null), 
     assets : assetPath(),
-    index : listPath('index','recent-posts',{descending:true,limit:8})
+    index : listPath('index','recent-posts',{descending:true,limit:8}),
+    env: getEnv()
   });
 }

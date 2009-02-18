@@ -1,5 +1,6 @@
 function(doc, req) {  
   // !json lib.templates.post
+  // !json blog
   // !code lib.helpers.ejs.ejs
   // !code lib.helpers.ejs.view
   // !code lib.helpers.template2
@@ -22,6 +23,7 @@ function(doc, req) {
     assets : assetPath(),
     editPostPath : showPath('edit', doc._id),
     labels: labels.join(', '),
-    index : listPath('index','recent-posts',{descending:true, limit:8})
+    index : listPath('index','recent-posts',{descending:true, limit:8}),
+    env: getEnv()
   });
 }

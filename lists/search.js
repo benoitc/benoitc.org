@@ -1,5 +1,5 @@
 function(head, row, req, row_info) {
-  // !json lib.templates.index
+  // !json lib.templates.search
   // !json blog
   // !json locales
   // !code lib.helpers.couchapp
@@ -8,36 +8,29 @@ function(head, row, req, row_info) {
   // !code lib.helpers.template2
     
   var indexPath = listPath('index','recent-posts',{descending:true, limit:8});
-  var feedPath = listPath('index','recent-posts',{descending:true, limit:8, format:"atom"});
+  var feedPath = listPath('search','topics',{descending:true, limit:8, format:"atom"});
   var archivesPath = listPath('index','recent-posts',{descending:true, limit:25});
   return respondWith(req, {
     html: function() {
         if (head) {
-            return template(lib.templates.index.head, {
+            return template(lib.templates.search.head, {
                 assets: assetPath(),
                 archivesPath: archivesPath,
                 feedPath: feedPath
+
             });
         } else if (row) {
-            if (!req.query.limit && row_info.row_number == 7)
-                return {stop: true}
-                
+
             var fcreated_at = new Date().setRFC3339(row.value.created_at).toLocaleString();
-            return template(lib.templates.index.row, {
+            return template(lib.templates.search.row, {
                     post: row.value,
                     fcreated_at: fcreated_at,
                     link: showPath('post', row.id),
-                    assets: assetPath(),
-                    feedPath: feedPath
+                    assets: assetPath()
             });
         } else {
-            var nextPath = listPath('index','recent-posts', {
-                    startkey:row_info.prev_key, 
-                    descending:true, 
-                    limit:25 });
-
-            return template(lib.templates.index.tail, {
-                nextPath: nextPath,
+            return template(lib.templates.search.tail, {
+                archivesPath: archivesPath,
                 assets: assetPath(),
                 env: getEnv()
             });
@@ -68,23 +61,6 @@ function(head, row, req, row_info) {
       } else {
         return {body: "</feed>"};
       }
-    },
-    xml: function() {
-      //sitemap
-       if (head) {
-        return {body:'<?xml version="1.0" encoding="UTF-8"?>\n'+
-            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>'};
-      } else if (row) {
-        var url = <url/>;
-        url.loc = makeAbsolute(req, showPath('post', row.id));
-        url.lastmod = row.value.created_at;
-        url.changefreq = "daily";
-        url.priority = "0.5";
-        return {body:url};
-      } else {
-        return {body: "</urlset>"};
-      }
-
     }
   })
 };

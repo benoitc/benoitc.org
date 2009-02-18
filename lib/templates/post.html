@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8"/>
-    <title>benoît chesneau web, artisan web.</title>
+    <title>benoît chesneau web - <%= doc.title %></title>
 
     <!--[if IE]>
 
@@ -20,8 +20,8 @@
     <![endif]-->
     <link rel="openid.server" href="http://www.myopenid.com/server">
     <link rel="openid.delegate" href="http://bchesneau.myopenid.com/">
-    <link rel="home index" href="http://benoitc.org/" type="text/html">
-    <link rel="me author" href="http://benoitc.org/benoitc.html" type="text/html">
+    <link rel="home index" href="http://benoitc.org" type="text/html">
+    <link rel="me author" href="http://benoitc.org/static/benoitc.html" type="text/html">
 
     <link rel="stylesheet" href="<%= assets %>/css/benoitc.css" type="text/css" media="screen, projection" />
 
@@ -81,20 +81,32 @@
         </section>
 
         <footer id="main-footer">
-            <p>2009 (c) <a href="<%= assets %>/apropos.html">Benoît Chesneau</a> - <a rel="license" href="http://creativecommons.org/licenses/by/2.0/fr/">Certains droits reservés</a>.</p>
+            <p>2009 (c) <a href="<%= assets %>/benoitc.html">Benoît Chesneau</a> - <a rel="license" href="http://creativecommons.org/licenses/by/2.0/fr/">Certains droits reservés</a>.</p>
         </footer> 
     </div>
 </body>
     <script src="/_utils/script/json2.js"></script>
     <script src="/_utils/script/jquery.js"></script>
     <script src="/_utils/script/jquery.couch.js"></script>
+
+    <script>
+        // ugly hack for rewriting
+        $.extend({
+            blog: {
+                dbname: "<%= env.dbname %>",
+                dname: "<%= env.dname %>"
+            }
+        });
+    </script>
+    
     <script src="<%= assets %>/js/jquery.couchapp.js"></script>
     <script src="<%= assets %>/js/strftime.js"></script>
     <script src="<%= assets %>/js/showdown.js"></script>
-    <script src="<%= assets %>/js/blog.js"></script>
+    <script src="<%= assets %>/js/blog.js"></script> 
     <script>
         $(document).ready(function() {
             localizeDates();
+
             $.CouchApp(function(app) {
                 var docid = document.location.pathname.split('/').pop();
                 var B = new Blog(app);
@@ -114,41 +126,41 @@
                     });
                 };
               
-                  displayComments();
-                  localizeDates();
+              displayComments();
+              localizeDates();
 
-                  var commentForm = app.docForm("form#new-comment", {
-                    fields : [
-                      "commenter-name", 
-                      "commenter-email", 
-                      "commenter-url", 
-                      "comment"
-                    ],
-                    template : {
-                      doc_type : "comment",
-                      post_id : docid,
-                      format : "markdown"
-                    },
-                    beforeSave : function(doc) {
-                        if (doc.comment)
-                            doc.html = B.formatBody(doc.comment);
-                      doc.created_at = new Date().rfc3339();
-                    },
-                    success : function(resp, doc) {
-                        $("#new-comment").html("<h3>votre commentaire vient d'être ajouté.</h3>");
-                      $("#comments ol").append(B.commentListing(doc));
-                      $("#comments ol li:last").hide().fadeIn(2000);
-                    }
-                  });
-                  
-                  $("#preview").click(function() {
-                    var doc = commentForm.localDoc();
-                    if (typeof doc.comment != "undefined" && doc.comment) {
-                        var html = B.formatBody(doc.comment);
-                        $('#comment-preview').html(html);
-                    }
-                  });
-                });
+              var commentForm = app.docForm("form#new-comment", {
+                fields : [
+                  "commenter-name", 
+                  "commenter-email", 
+                  "commenter-url", 
+                  "comment"
+                ],
+                template : {
+                  doc_type : "comment",
+                  post_id : docid,
+                  format : "markdown"
+                },
+                beforeSave : function(doc) {
+                    if (doc.comment)
+                        doc.html = B.formatBody(doc.comment);
+                  doc.created_at = new Date().rfc3339();
+                },
+                success : function(resp, doc) {
+                    $("#new-comment").html("<h3>votre commentaire vient d'être ajouté.</h3>");
+                  $("#comments ol").append(B.commentListing(doc));
+                  $("#comments ol li:last").hide().fadeIn(2000);
+                }
+              });
+              
+              $("#preview").click(function() {
+                var doc = commentForm.localDoc();
+                if (typeof doc.comment != "undefined" && doc.comment) {
+                    var html = B.formatBody(doc.comment);
+                    $('#comment-preview').html(html);
+                }
+              });
+            });
         });
 
     </script>
