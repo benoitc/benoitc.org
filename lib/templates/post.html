@@ -128,7 +128,8 @@
                       format : "markdown"
                     },
                     beforeSave : function(doc) {
-                      doc.html = B.formatBody(doc.comment);
+                        if (doc.comment)
+                            doc.html = B.formatBody(doc.comment);
                       doc.created_at = new Date().rfc3339();
                     },
                     success : function(resp, doc) {
@@ -140,8 +141,10 @@
                   
                   $("#preview").click(function() {
                     var doc = commentForm.localDoc();
-                    var html = B.formatBody(doc.comment);
-                    $('#comment-preview').html(html);
+                    if (typeof doc.comment != "undefined" && doc.comment) {
+                        var html = B.formatBody(doc.comment);
+                        $('#comment-preview').html(html);
+                    }
                   });
                 });
         });

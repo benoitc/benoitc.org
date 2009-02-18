@@ -99,13 +99,7 @@
                         onLoad : function(doc) {
                             if (doc._id) {
                                 $("#edit h2").html('Édition de ' + B.link_for(doc._id));
-                            }
-                            $('#save').click(function() {
-                                if (!$('#title').val()) {
-                                    alert('Title invalid');
-                                    return false;
-                                }
-                            });
+                            } 
                         },
                         beforeSave : function(doc) {
                             if (doc.body)

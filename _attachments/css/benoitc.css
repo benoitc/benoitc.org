@@ -223,10 +223,12 @@ header.page #mainav {
 
 #mainav a,
 #mainav li {
-	font-size: 80%;
-	line-height: 1;
+	font-size: 90%;
+	line-height: 90%;
 }
-
+#mainav a {
+	text-decoration: none;
+}
 
 
 /* COMMENTS */
@@ -250,7 +252,7 @@ ol.comments .comment-meta {
 	text-align: right;
 	color: #555;
 }
-ol.comments .commentor {
+ol.comments .author {
 	color:#000;
 	background:#fff;
 }

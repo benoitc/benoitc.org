@@ -1,5 +1,5 @@
 function (newDoc, oldDoc, userCtx) {
-  var doc_type = (oldDoc || newDoc)['type'];
+  var doc_type = (oldDoc || newDoc)['doc_type'];
   var author = (oldDoc || newDoc)['author'];
 
   function forbidden(message) {    
@@ -55,11 +55,9 @@ function (newDoc, oldDoc, userCtx) {
     // comment required fields
     require(newDoc.created_at, "Comments must have a created_at date.");
     require(newDoc.post_id, "Comments require a post_id.");
-    require(newDoc.commenter && newDoc.commenter.name 
-      && newDoc.commenter.email, "Comments must include name and email.");
     require(newDoc.html, "Comments require an html body.");
     require(newDoc.comment, "Comments require a comment field.");
-    require(newDoc.format, "Comments require a format field.");
+    require(newDoc.commenter && newDoc.commenter.name, 'Comments require a name');
     if (newDoc.commenter && newDoc.commenter.url) {*/
       require(newDoc.commenter.url.match(/^https?:\/\/[^.]*\..*/), "Commenter URL is not valid.");      
     }
