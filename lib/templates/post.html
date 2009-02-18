@@ -39,7 +39,7 @@
             <header>
                 <h1><%= doc.title %></h1>
                 <time title="GMT" datetime="<%= doc.created_at %>" class="caps"><%= fcreated_at %></time>     
-                <p><a rel="me author" href="http://benoitc.org/benoitc.html">Benoît Chesneau</a></p>       
+                <p><a rel="me author" href="<%= assets %>/benoitc.html">Benoît Chesneau</a></p>       
             </header>    
             <%= doc.html %>
             <% if (labels) { %>

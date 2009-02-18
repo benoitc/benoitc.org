@@ -250,6 +250,45 @@ header.page #mainav {
 	padding-right: 19px;
 }
 
+.about img {
+	float: left;
+}
+
+header.about {
+	margin:2em 20px;
+	text-align:center;
+}
+header.about h1 {
+	margin:0;
+}
+header h1.about:first-child {
+	margin-top:1.5em;
+}
+header.about h1 a,
+header.about h1 a:link,
+header.about h1 a:visited,
+header.about h1 a:hover {
+	background:transparent none repeat scroll 0 0;
+	color:#000000;
+	text-decoration:none;
+}
+header.about p {
+	color:#777777;
+	font-variant:small-caps;
+	margin:0;
+	text-transform:capitalize;
+}
+header.about a, 
+header.about a:link,
+header.about a:visited {
+	background:#FFFFFF none repeat scroll 0 0;
+	color:#444455;
+}
+header.about a:hover {
+	background:#000 none repeat scroll 0 0;
+	color:#fff;
+	text-decoration:none;
+}
 /* COMMENTS */
 
 ol.comments {
