@@ -58,8 +58,8 @@ function (newDoc, oldDoc, userCtx) {
     require(newDoc.html, "Comments require an html body.");
     require(newDoc.comment, "Comments require a comment field.");
     require(newDoc.commenter && newDoc.commenter.name, 'Comments require a name');
-    if (newDoc.commenter && newDoc.commenter.url) {*/
-      require(newDoc.commenter.url.match(/^https?:\/\/[^.]*\..*/), "Commenter URL is not valid.");      
+    if (newDoc.commenter && newDoc.commenter.url) {
+      require(newDoc.commenter.url.match(/^https?:\/\/[^.]*\..*/), "Commenter URL is not valid.");
     }
   }
   return true;

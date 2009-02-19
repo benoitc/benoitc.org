@@ -100,9 +100,14 @@ function Blog(app) {
     /* comments */
     function author(author) {
         if (!author) return '';
-        if (!author.url) return '<span class="author">by ' + safe(author.name) + '</span>';
-        return '<span class="author">by <a href="'+author.url+'">' 
+        if (!author.url) return '<span class="author">par ' + safe(author.name) + '</span>';
+        return '<span class="author">par <a href="'+author.url+'">' 
         + safe(author.name) + '</a></span>';      
+    };
+
+    function gravatar(c) {
+        if (!c.commenter.gravatar) return '';
+        return '<img class="gravatar" src="http://www.gravatar.com/avatar/'+c.commenter.gravatar+'.jpg?s=40&d=identicon"/>';
     };
 
     this.commentListing = function(c) {
@@ -118,7 +123,7 @@ function Blog(app) {
             + '</p>'
             + '</div>'
             +'<p class="comment-meta">'
-            +'<img class="gravatar" src="http://www.gravatar.com/avatar/'+c.commenter.gravatar+'.jpg?s=40&d=identicon"/>'
+            + gravatar(c)
             + author(c.commenter) + ', '
             + '<time title="GMT" datetime="'+c.created_at
             + '" title="'+date_title+'" class="caps">'+date_html+ '</p>'
