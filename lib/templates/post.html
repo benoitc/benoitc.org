@@ -102,7 +102,8 @@
     <script src="<%= assets %>/js/jquery.couchapp.js"></script>
     <script src="<%= assets %>/js/strftime.js"></script>
     <script src="<%= assets %>/js/showdown.js"></script>
-    <script src="<%= assets %>/js/blog.js"></script> 
+    <script src="<%= assets %>/js/blog.js"></script>
+    <script src="<%= assets %>/js/md5.js"></script>  
     <script>
         $(document).ready(function() {
             localizeDates();
@@ -147,7 +148,12 @@
                   doc.created_at = new Date().rfc3339();
                 },
                 success : function(resp, doc) {
-                    $("#new-comment").html("<h3>votre commentaire vient d'être ajouté.</h3>");
+                  if (doc.commenter.email) { 
+                        doc.commenter.gravatar = hex_md5(doc.commenter.email);
+                  } else {
+                    doc.commenter.gravatar = null;
+                  }
+                  $("#new-comment").html("<h3>votre commentaire vient d'être ajouté.</h3>");
                   $("#comments ol").append(B.commentListing(doc));
                   $("#comments ol li:last").hide().fadeIn(2000);
                 }

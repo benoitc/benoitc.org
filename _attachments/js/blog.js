@@ -106,7 +106,7 @@ function Blog(app) {
     };
 
     function gravatar(c) {
-        if (!c.commenter.gravatar) return '';
+        if (!c.commenter.email) return '';
         return '<img class="gravatar" src="http://www.gravatar.com/avatar/'+c.commenter.gravatar+'.jpg?s=40&d=identicon"/>';
     };
 
