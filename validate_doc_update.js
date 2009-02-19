@@ -29,12 +29,15 @@ function (newDoc, oldDoc, userCtx) {
     }
   }
 
+  // since we deleted and we validated auth we don't need to go further.
+  if (newDoc._deleted) {
+      return true;
+  }
   
   // general timestamps
-  if (!newDoc._deleted && (oldDoc && oldDoc.created_at != newDoc.created_at)) 
+  if (oldDoc && oldDoc.created_at != newDoc.created_at)
     forbidden("You may not change the created_at field of a doc.");
   
-  // this ensures that the date will be UTC, parseable, and collate correctly
   //if (newDoc.created_at) {
   //  if (!newDoc.created_at.match(/\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} \+0000/))
   //    forbidden("Sorry, "+newDoc.created_at+" is not a valid date format. Try: 2008/12/10 21:16:02 +0000");
