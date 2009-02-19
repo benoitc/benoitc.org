@@ -16,7 +16,39 @@
 // Monkeypatching Date. 
 
 
+
+
+
 (function($) {
+  function getEnv() {
+    var href = document.location.href;
+    if (href.split('#').length <= 1)
+        return;
+    var fragments = href.split('#')[1].split(',');
+
+    if (fragments.length == 4) {
+        $.extend({
+            blog: {
+                'dbname': fragments[0],
+                'dname': fragments[1],
+                'cookie_path': fragments[2]
+            }
+        });
+    } else if (fragments.length == 3) {
+        $.extend({
+            blog: {
+                'dbname': fragments[0],
+                'dname': fragments[1]            
+            }
+        });
+    } else if (fragments.length == 2) {
+        $.extend({
+            blog: {
+                'dbname': fragments[0]            
+            }
+        });
+    }
+  }
 
   function f(n) {    // Format integers to have at least two digits.
       return n < 10 ? '0' + n : n;
@@ -42,6 +74,7 @@
   function init(app) {
 
     $(function() {
+      getEnv();
       if ($.blog && $.blog.dbname) {
         var dbname = $.blog.dbname;
       } else {
@@ -147,14 +180,19 @@
         },
         attemptLogin : function(win, fail) {
           // depends on nasty hack in blog validation function
+          if ($.blog && $.blog.cookie_path) {
+            var cookie_path = $.blog.cookie_path;
+          } else {
+            var cookie_path = "/" + dbname;
+          }
           db.saveDoc({"author":"_self"}, { error: function(s, e, r) {
             var namep = r.split(':');
             if (namep[0] == '_self') {
               login = namep.pop();
-              $.cookies.set("login", login, '/'+dbname)
+              $.cookies.set("login", login, cookie_path)
               win && win(login);
             } else {
-              $.cookies.set("login", "", '/'+dbname)
+              $.cookies.set("login", "", cookie_path)
               fail && fail(s, e, r);
             }
           }});        
@@ -166,6 +204,12 @@
           } else {
             loggedOut && loggedOut();
           }
+        },
+        is_logged: function() {
+            login = login || $.cookies.get("login");
+            if (login)
+                return true;
+            return false;
         },
         db : db,
         design : design,

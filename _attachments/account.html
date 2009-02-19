@@ -52,20 +52,20 @@
     <script src="/_utils/script/jquery.js"></script>
     <script src="/_utils/script/jquery.cookies.js"></script>
     <script src="/_utils/script/jquery.couch.js"></script>
-    <script>
-    // ugly hack for rewriting
-        $.extend({
-            blog: {
-                dbname: "benoitc-dev",
-                dname: "benoitc"
-            }
-        });
-    </script>
+
     <script src="js/jquery.couchapp.js"></script>
     
     <script>
         $.CouchApp(function(app) {
-            var redirectUrl = document.location.hash.replace('#','');
+
+            // ugly hack for rewriting
+            var href = document.location.href;
+            var redirectUrl = '';
+            if (href.split('#').length > 1) {
+                var fragments = href.split('#')[1].split(',');
+
+                var redirectUrl = fragments.pop();
+            }
             $('#content').append('<p>Attempting login.</p>');
             app.attemptLogin(function(login) {
                 if (redirectUrl) document.location = unescape(redirectUrl).replace('_design/','_design%2F');

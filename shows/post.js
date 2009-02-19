@@ -16,6 +16,8 @@ function(doc, req) {
                   + '" rel="tag">'+ doc.labels[i] + '</a>');
       }
   }
+
+  var editPath = showPath("edit", doc._id);
   // we only show html
   return template(lib.templates.post, {
     doc: doc,
@@ -24,6 +26,7 @@ function(doc, req) {
     editPostPath : showPath('edit', doc._id),
     labels: labels.join(', '),
     index : listPath('index','recent-posts',{descending:true, limit:8}),
-    env: getEnv()
+    env: getEnv(),
+    editPath: editPath
   });
 }

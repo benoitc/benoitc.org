@@ -7,11 +7,14 @@ function(doc, req) {
   // !code lib.helpers.couchapp
 
   // we only show html
+  //
+  
+
   return template(lib.templates.edit, {
     doc : doc,
     docid : toJSON((doc && doc._id) || null), 
     assets : assetPath(),
     index : listPath('index','recent-posts',{descending:true,limit:8}),
     env: getEnv()
-  });
+    });
 }

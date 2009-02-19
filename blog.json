@@ -6,7 +6,8 @@
             "show_url": "show",
             "list_url": "list",
             "dbname": "benoitc-dev",
-            "dname": "benoitc"
+            "dname": "benoitc",
+            "cookie_path": "/"
         }
     }
 }

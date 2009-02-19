@@ -43,13 +43,14 @@
                         
                 <textarea name="body" id="body" cols="80"
                     rows="20"></textarea>
-
-                <p><label for="title">Titre<label><input type="text"
-                        name="title" id="title" value=""></p>
-
-                <p><label for="labels">Libellés</label><input type="text"
-                name="labels" id="labels" value=""></p>
                 
+                <ol>
+                    <li><label for="title">Titre<label><input type="text"
+                            name="title" id="title" value=""></li>
+
+                    <li><label for="labels">Libellés</label><input type="text"
+                name="labels" id="labels" value=""></li>
+                </ol>
                 
                 <p><input type="submit" name="save" id="save" value="Save">
                 or <a href="<%= index %>">Cancel</a> <span id="saved" style="display:none;">Saved</span></p>
@@ -74,7 +75,8 @@
         $.extend({
             blog: {
                 dbname: "<%= env.dbname %>",
-                dname: "<%= env.dname %>"
+                dname: "<%= env.dname %>",
+                cookie_path: "<% env.cookie_path %>"
             }
         });    
     </script>
@@ -93,7 +95,7 @@
 
             $.CouchApp(function(app) {
                 app.loggedInNow(function(login) {
-                    $("#header").prepend('<span id="login">'+login+'</span>');
+                    $("header").prepend('<span id="login">'+login+'</span>');
                     
                     var B = new Blog(app);
 
@@ -141,7 +143,7 @@
                     new Editor(); 
                     }, function() {
                     // callback
-                    $('body').append('<a href="<%= assets %>/account.html#'+document.location+'">redirect</a>');
+                    $('body').append('<a href="<%= assets %>/account.html#<%= env.dbname %>,<%= env.dname %>,<%= env.cookie_path %>,'+document.location+'">redirect</a>');
                     var absurl = $('body a:last')[0].href;
                     document.location = absurl;
                 });

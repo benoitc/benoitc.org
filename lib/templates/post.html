@@ -31,9 +31,7 @@
 
 <body>
     <div id="container">
-        <header>
-            
-        </header>
+        <header id="adminheader"></header>
         <section id="maincontent"> 
         <article class="article content">
             <header>
@@ -88,6 +86,7 @@
     <script src="/_utils/script/json2.js"></script>
     <script src="/_utils/script/jquery.js"></script>
     <script src="/_utils/script/jquery.couch.js"></script>
+    <script src="/_utils/script/jquery.cookies.js"></script>
 
     <script>
         // ugly hack for rewriting
@@ -109,6 +108,10 @@
             localizeDates();
 
             $.CouchApp(function(app) {
+                if (app.is_logged()) {
+                    $("#adminheader").html('<p><a href="<%= editPath %>">Edit</a>'
+                    +'</p>');
+                }
                 var docid = document.location.pathname.split('/').pop();
                 var B = new Blog(app);
                 function displayComments() {
