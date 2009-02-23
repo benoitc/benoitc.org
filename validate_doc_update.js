@@ -1,6 +1,7 @@
 function (newDoc, oldDoc, userCtx) {
   var doc_type = (oldDoc || newDoc)['doc_type'];
   var author = (oldDoc || newDoc)['author'];
+  var docid = (oldDoc || newDoc)['_id'];
 
   function forbidden(message) {    
     throw({forbidden : message});
@@ -21,19 +22,21 @@ function (newDoc, oldDoc, userCtx) {
     
     if (userCtx.roles.indexOf('_admin') == -1) {
       // admin can edit anything, only check when not admin...
-      if (!newDoc._deleted && (oldDoc && oldDoc.author != newDoc.author))
+      if ((oldDoc && oldDoc.author != newDoc.author))
         forbidden("You may not change the author of a doc.");
 
       if (author != userCtx.name)
         unauthorized("Only "+author+" may edit this document.");      
-    }
+    } 
+  } else if (docid && docid.startswith('_design/') {
+        if (userCtx.roles.indexOf('_admin') == -1) {
+            unauthorized('Please log in.');
+        }
   }
 
-  // since we deleted and we validated auth we don't need to go further.
-  if (newDoc._deleted) {
-      return true;
-  }
-  
+  // authors and admins can always delete
+  if (newDoc._deleted) return true;
+
   // general timestamps
   if (oldDoc && oldDoc.created_at != newDoc.created_at)
     forbidden("You may not change the created_at field of a doc.");
