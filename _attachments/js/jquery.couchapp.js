@@ -10,45 +10,15 @@
 // License for the specific language governing permissions and limitations under
 // the License.
 
-// Usage:
-// $.CouchApp
-
-// Monkeypatching Date. 
-
-
-
-
+// Usage: The passed in function is called when the page is ready.
+// CouchApp passes in the app object, which takes care of linking to 
+// the proper database, and provides access to the CouchApp helpers.
+// $.CouchApp(function(app) {
+//    app.db.view(...)
+//    ...
+// });
 
 (function($) {
-  function getEnv() {
-    var href = document.location.href;
-    if (href.split('#').length <= 1)
-        return;
-    var fragments = href.split('#')[1].split(',');
-
-    if (fragments.length == 4) {
-        $.extend({
-            blog: {
-                'dbname': fragments[0],
-                'dname': fragments[1],
-                'cookie_path': fragments[2]
-            }
-        });
-    } else if (fragments.length == 3) {
-        $.extend({
-            blog: {
-                'dbname': fragments[0],
-                'dname': fragments[1]            
-            }
-        });
-    } else if (fragments.length == 2) {
-        $.extend({
-            blog: {
-                'dbname': fragments[0]            
-            }
-        });
-    }
-  }
 
   function f(n) {    // Format integers to have at least two digits.
       return n < 10 ? '0' + n : n;
@@ -70,23 +40,11 @@
   };
 
   var login;
-
+  
   function init(app) {
-
     $(function() {
-      getEnv();
-      if ($.blog && $.blog.dbname) {
-        var dbname = $.blog.dbname;
-      } else {
-        var dbname = document.location.href.split('/')[3];
-      }
-
-      if ($.blog && $.blog.dname) {
-        var dname = $.blog.dname;
-      } else {
-        var dname = unescape(document.location.href).split('/')[5];
-      }
-
+      var dbname = document.location.href.split('/')[3];
+      var dname = unescape(document.location.href).split('/')[5];
       var db = $.couch.db(dbname);
       var design = new Design(db, dname);
       
@@ -173,26 +131,20 @@
         return instance;
       }
       
-            
       app({
         showPath : function(form, docid) {
-          return '/'+[dbname, '_show', dname, form, docid].join('/')
+          return '/'+[dbname, '_design', dname, '_show', form, docid].join('/')
         },
         attemptLogin : function(win, fail) {
           // depends on nasty hack in blog validation function
-          if ($.blog && $.blog.cookie_path) {
-            var cookie_path = $.blog.cookie_path;
-          } else {
-            var cookie_path = "/" + dbname;
-          }
           db.saveDoc({"author":"_self"}, { error: function(s, e, r) {
             var namep = r.split(':');
             if (namep[0] == '_self') {
               login = namep.pop();
-              $.cookies.set("login", login, cookie_path)
+              $.cookies.set("login", login, '/'+dbname)
               win && win(login);
             } else {
-              $.cookies.set("login", "", cookie_path)
+              $.cookies.set("login", "", '/'+dbname)
               fail && fail(s, e, r);
             }
           }});        
@@ -217,9 +169,7 @@
       });
     });
   };
-  
+
   $.CouchApp = $.CouchApp || init;
-  
 
 })(jQuery);
-

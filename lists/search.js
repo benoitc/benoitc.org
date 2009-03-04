@@ -1,11 +1,10 @@
 function(head, row, req, row_info) {
   // !json lib.templates.search
   // !json blog
-  // !json locales
-  // !code lib.helpers.couchapp
-  // !code lib.helpers.ejs.ejs
-  // !code lib.helpers.ejs.view
-  // !code lib.helpers.template2
+  // !code lib/helpers/ejs/*
+  // !code lib/helpers/template.js
+  // !code vendor/couchapp/date.js
+  // !code vendor/couchapp/path.js
     
   var indexPath = listPath('index','recent-posts',{descending:true, limit:8});
   var feedPath = listPath('search','topics',{descending:true, limit:8, format:"atom"});
@@ -31,8 +30,7 @@ function(head, row, req, row_info) {
         } else {
             return template(lib.templates.search.tail, {
                 archivesPath: archivesPath,
-                assets: assetPath(),
-                env: getEnv()
+                assets: assetPath()
             });
         }
     },
@@ -46,7 +44,8 @@ function(head, row, req, row_info) {
         f.link.@rel = "self";
         f.generator = 'benoitc.org';
         f.updated = new Date().rfc3339();
-        return {body:f.toXMLString().replace(/\<\/feed\>/,'')};
+        return {body:'<?xml version="1.0" encoding="UTF-8"?>\n'+
+                f.toXMLString().replace(/\<\/feed\>/,'')};
       } else if (row) {
         var entry = <entry/>;
         entry.id = makeAbsolute(req, '/'+encodeURIComponent(req.info.db_name)+'/'+encodeURIComponent(row.id));

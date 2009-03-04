@@ -24,16 +24,13 @@
     <link rel="me author" href="http://benoitc.org/about.html" type="text/html">
     <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
 
-    
-
-
 </head>
 
 
 <body>
         <header>
         <h1>
-            <a rel="me author" href="about.html">Benoît Chesneau</a>
+            <a rel="me author" href="benoitc.html">Benoît Chesneau</a>
         </h1>
         </header>
         <section id="content">
@@ -57,26 +54,18 @@
     
     <script>
         $.CouchApp(function(app) {
-
-            // ugly hack for rewriting
-            var href = document.location.href;
-            var redirectUrl = '';
-            if (href.split('#').length > 1) {
-                var fragments = href.split('#')[1].split(',');
-
-                var redirectUrl = fragments.pop();
-            }
-            $('#content').append('<p>Attempting login.</p>');
-            app.attemptLogin(function(login) {
-                if (redirectUrl) document.location = unescape(redirectUrl).replace('_design/','_design%2F');
-                $('#content').append('<p>Success.</p>');
-                $('h1').text('Welcome '+login);
-                $('#content').append('<p>Now that you\'re logged in, you can <a href="edit.html">write blog posts.</a></p>');
-            }, function() {
-                $('h1').text('Incorrect login');
-                $('#content').append('<p>Fail.</p>');
-            });
-        }); 
+		      var redirectUrl = document.location.hash.replace('#','');
+		      $('#content').append('<p>Attempting login.</p>');
+		      app.attemptLogin(function(login) {
+		        if (redirectUrl) document.location = unescape(redirectUrl).replace('_design/','_design%2F');
+		        $('#content').append('<p>Success.</p>');
+		        $('h1').text('Welcome '+login);
+		        $('#content').append('<p>Now that you\'re logged in, you can <a href="_show/edit">write blog posts.</a></p>');
+		      }, function() {
+		        $('h1').text('Incorrect login');
+		        $('#content').append('<p>Fail.</p>');
+		      });
+		    });
     </script>
 
 </html>

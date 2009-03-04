@@ -14,7 +14,7 @@ function encodeOptions(options) {
   if (!buf.length) {
     return "";
   }
-  return "?" + buf.join("&");
+  return "?" + buf.join("&amp;");
 }
 
 function concatArgs(array, args) {
@@ -40,17 +40,17 @@ function makePath(array) {
 };
 
 function assetPath() {
-  var parts = ['',req.path[0], '_design', req.path[2]];
+  var p = req.path, parts = ['', p[0], p[1] , p[2]];
   return makePath(concatArgs(parts, arguments));
 };
 
 function showPath() {
-  var parts = ['',req.path[0], '_show', req.path[2]];
+  var p = req.path, parts = ['', p[0], p[1] , p[2], '_show'];
   return makePath(concatArgs(parts, arguments));
 };
 
 function listPath() {
-  var parts = ['',req.path[0], '_list', req.path[2]];
+  var p = req.path, parts = ['', p[0], p[1] , p[2], '_list'];
   return makePath(concatArgs(parts, arguments));
 };
 

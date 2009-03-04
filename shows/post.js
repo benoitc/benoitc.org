@@ -1,10 +1,10 @@
 function(doc, req) {  
   // !json lib.templates.post
   // !json blog
-  // !code lib.helpers.ejs.ejs
-  // !code lib.helpers.ejs.view
-  // !code lib.helpers.template2
-  // !code lib.helpers.couchapp
+  // !code lib/helpers/ejs/*
+  // !code lib/helpers/template.js
+  // !code vendor/couchapp/date.js
+  // !code vendor/couchapp/path.js
 
   var fcreated_at = new Date().setRFC3339(doc.created_at).toLocaleString();
 
@@ -26,7 +26,6 @@ function(doc, req) {
     editPostPath : showPath('edit', doc._id),
     labels: labels.join(', '),
     index : listPath('index','recent-posts',{descending:true, limit:8}),
-    env: getEnv(),
     editPath: editPath
   });
 }

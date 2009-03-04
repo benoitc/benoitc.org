@@ -28,11 +28,7 @@ function (newDoc, oldDoc, userCtx) {
       if (author != userCtx.name)
         unauthorized("Only "+author+" may edit this document.");      
     } 
-  } else if (docid && docid.startswith('_design/') {
-        if (userCtx.roles.indexOf('_admin') == -1) {
-            unauthorized('Please log in.');
-        }
-  }
+  } 
 
   // authors and admins can always delete
   if (newDoc._deleted) return true;

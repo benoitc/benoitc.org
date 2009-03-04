@@ -1,5 +1,5 @@
 function(doc) {
-  // !code lib.helpers.md5
+  // !code lib/helpers/md5.js
   if (doc.doc_type == "comment") {
     if (doc.commenter.email) {
         doc.commenter.gravatar = hex_md5(doc.commenter.email);
