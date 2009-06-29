@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <title>benoît chesneau web - edit</title>
+
+    <!--[if IE]>
+
+    <script>
+        // allow IE to recognize HTMl5 elements
+        document.createElement('section');
+        document.createElement('article');
+        document.createElement('aside');
+        document.createElement('footer');
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('time');
+
+    </script>
+    <![endif]-->
+    <link rel="openid.server" href="http://www.myopenid.com/server">
+    <link rel="openid.delegate" href="http://bchesneau.myopenid.com/">
+    <link rel="home index" href="http://benoitc.org/" type="text/html">
+    <link rel="me author" href="<%= path_level %>/benoitc.html" type="text/html">
+
+    <link rel="stylesheet" href="<%= path_level %>/css/benoitc.css" type="text/css" media="screen, projection" />
+    
+
+
+</head>
+
+
+<body>
+        <header class="page">
+            <p><a href="<%= path_level %>/_list/index/recent-posts?descending=true">benoît chesneau web v01</a></p>
+        </header>
+        <div id="edit">
+            <% if (!doc.title) { %>
+            <h2>Nouvel article</h2>
+            <% } else { %>
+            <h2>Édition de <a href="../post/<%= doc._id %>"><%= doc.title %></a></h2>
+            <% } %>
+            <form id="fedit" name="fedit" action="new.html"
+                method="post">
+                <input type="hidden" name="author" id="author" value="<%= author_name %>">
+                <textarea name="body" id="body" cols="80"
+                    rows="20"><%= doc.body %></textarea>
+                
+                <table>
+                  <tr>
+                    <td class="l"><label for="title">Titre<label></td>
+                    <td><input type="text"
+                            name="title" id="title" value="<%= doc.title %>"></td>
+                  </tr>
+                  <tr>
+                    <td class="l"><label for="labels">Libellés</label></td>
+                    <td><input type="text"
+                name="labels" id="labels" value="<%= doc.labels %>"></td>
+                  </tr>
+                </table>
+                
+                <p><input type="submit" name="save" id="save" value="Save">
+                or <a href="<%= index %>">Cancel</a> <span id="saved" style="display:none;">Saved</span></p>
+            </form>
+            <div id="mdpreview"></div>
+        </div>
+
+        <footer id="main-footer">
+        <p>2009 (c) <a href="<%= path_level %>/benoitc.html">Benoît Chesneau</a> - <a rel="license" href="http://creativecommons.org/licenses/by/2.0/fr/">Certains droits reservés</a>.</p>
+        </footer> 
+
+  <script src="/_utils/script/json2.js"></script>
+  <script src="/_utils/script/jquery.js"></script>
+  <script src="/_utils/script/jquery.cookies.js"></script>
+  <script src="/_utils/script/jquery.couch.js"></script>
+
+
+  <script src="<%= path_level %>/js/showdown.js"></script>
+
+  <script src="<%= path_level %>/js/jquery.textarea.js"></script>
+  <script src="<%= path_level %>/vendor/inditeweb/jquery.couchapp.js"></script>
+  <script src="<%= path_level %>/js/editor.js"></script>
+  <script src="<%= path_level %>/js/strftime.js"></script>
+  <script src="<%= path_level %>/js/blog.js"></script>
+  <script src="<%= path_level %>/js/urlify.js"></script>
+
+  <script>
+  $(document).ready(function() {
+
+    $.CouchApp(function(app) {
+      app.attemptLogin(function(login) {
+        var B = new Blog(app);
+        
+        
+        var postForm = app.docForm("form#fedit", {
+          id : <%= docid %>,
+          fields : ["title", "body", "labels"],
+          populate: false,
+          template : {
+            doc_type : "post",
+            format : "markdown",
+            author: login
+          },
+          beforeSave : function(doc) {
+            if (doc.body)
+              doc.html = B.formatBody(doc.body);
+
+            if (!doc.created_at) {
+              doc.created_at = new Date().rfc3339();
+            }
+
+            if (!doc.slug && doc.title) {
+              doc.slug = doc.created_at.slice(0, 10).replace(/\-*/g, '') 
+                + "_" + URLify(doc.title, 255);
+              doc._id = doc.slug;
+            }
+
+            doc.updated = new Date().rfc3339();
+            if(doc.labels) {
+              doc.labels = doc.labels.split(",");
+              for(var i=0; i<doc.labels.length;  i++) {
+                doc.labels[i] = $.trim(doc.labels[i]);
+              }
+            } 
+          },
+          success : function(resp) {
+            $("#saved").text("Enregistré _rev: "+resp.rev).fadeIn(500).fadeOut(3000);
+            $("#edit h2").html('Édition de ' + B.link_for(resp.id));
+          }
+        });
+        new Editor(); 
+
+      }, function() {
+        var href = document.location.href;
+        document.location = "../post/"+ <%= docid %>;
+      });
+    });
+  });
+  </script>
+</body>
+
+
+</html>

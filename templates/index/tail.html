@@ -1,0 +1,24 @@
+        
+
+        <% if (nextPath || previous) { %>
+        <p class="next"><% if (previous) { %><a href="<%= previous %>">« articles précedents</a>  <% } %><% if (nextPath) {%><a href="<%= nextPath %>">articles suivants »</a><% } %></p>
+        <% } %>
+        <div class="clear"></div>
+        <footer id="main-footer">
+            <p>2009 (c) <a href="../../benoitc.html">Benoît Chesneau</a> - <a rel="license" href="http://creativecommons.org/licenses/by/2.0/fr/">Certains droits reservés</a>.</p>
+        </footer>
+    </div>
+</body>
+    <script src="/_utils/script/json2.js"></script>
+    <script src="/_utils/script/jquery.js"></script>
+    <script src="/_utils/script/jquery.couch.js"></script>
+    <script src="../../vendor/inditeweb/jquery.couchapp.js"></script>
+    <script src="../../js/strftime.js"></script>
+    <script src="../../js/blog.js"></script>
+    <script>
+        $(document).ready(function() {
+            localizeDates();
+        });
+
+    </script>
+</html>

@@ -1,17 +1,20 @@
+
+
 /* 18px base font size / 25px baseline */
 body {
+    background:#efefef;
 	font-size: 100%;   /* 18px (probably) */
 	line-height:1.5;
 	letter-spacing:-0.015em;
 	margin:0 10px;
-	font-family: 'lucida sans unicode', 'lucida grande',
-		helvetica, 'bitstream vera sans', sans-serif;
+	font-family: monospace;
+    ;
 	color:#223;
 	background-color:#fff;
 }
 
 #container {
-	max-width:40em;
+	width: 45em;
 	margin:0 auto;
 }
 
@@ -73,6 +76,9 @@ a:hover {
 	text-decoration:none;
 }
 
+img {
+    max-width: 100%;
+}
 
 /* TYPOGRAPHY */
 
@@ -161,15 +167,17 @@ h4 {
 p.next {
 	text-align: center;
 	clear: both;
-	width: 100%;	
+	width: 100%;
+	padding: 15px 0;
 }
 
 p.next a {
 	text-decoration: none;
-	border: 1px solid #AAAADD;
-	color: #336699;
+	border: 1px solid #000;
+	color: #000;
 	margin: 0.2em;
 	padding: 0.1em 0.3em;
+	background: none;
 }
 
 
@@ -179,90 +187,42 @@ header.page {
 	display: block;
 	position: relative;
 	width: 100%;
-	height: 100px;
+	height: 20px;
 	clear: both;
+	border-bottom:1px solid #ddd;
+	padding-bottom: 0.3em;
 }
 
-header.page h1 {
-	display: block;
-	float: right;
-	text-align: right;
-	margin: 5px 0;
-	padding: 15px 115px 0 0;
-	background: url(../img/avatar.png) right top no-repeat;
-	height: 100px;
-	z-index: 90;
-	width: 300px;
-}
-header.page h2 {
-	margin-top: -70px;
-	padding: 0 115px 0 0;	
-	z-index: 100;
-	color:#345;
-	text-align: right;
-	float: right;
+header.page p {
+   
+    
+   
 }
 
-header.page h1 a, 
-header.pag h1 a:link, 
-header.page h1 a:visited, 
-header.page h1 a:hover {
-	color: #000;
-	text-decoration:none;
-	background:transparent;
+header.page p span {
+    text-align: left;
+    border: 0;
+    font-family: georgia;
+    font-weight: bold;
+    color: #000;
 }
 
-
-header.page #mainav {
-	display: block;
-	z-index: 80;
-	width: 150px;
-	float: left;
-	position: relative;
+header.page p a,
+header.page p a:hover,
+header.page p a:visited,
+header.page p a:link  {
+    display: block;
+    float: right;
+    text-decoration: none;
+    color: #fff;
+    background: #000;
+    width: 250px;
+    padding: 0.2em;
+    text-align: right;
 }
-
-#mainav ul,
-#mainnav ul li,
-#mainav li a {
-	margin: 0;
-	padding: 0;
+header.page p a:hover {
+    text-decoration: underline;
 }
-
-#mainav ul {
-	position: relative;
-	list-style: none;
-	margin: 20px 0;
-	padding: 0;
-}
-
-#mainav a,
-#mainav li {
-	font-size: 90%;
-}
-#mainav a {
-	text-decoration: non ;
-}
-#mainav a.atom {
-	background-image: url(../img/blog.png) ;
-	background-position: right top;
-	background-repeat: no-repeat;
-	padding-right: 19px;
-}
-
-.about img {
-	float: left;
-}
-
-
-#adminheader {
-	display: block;
-	text-align: center;
-	font-size: 80%;
-	height: 12px;
-	margin: 0;
-	padding:0;
-}
-
 /* COMMENTS */
 
 ol.comments {
@@ -315,10 +275,10 @@ ol.comments .author {
     position: relative;
     width: 48%;
     float: right;
-    height: 100%;
+    height: 450px;
     margin:0;
    padding: 0; 
-    overflow: auto;    
+    overflow-y: auto;    
 }
 
 #fedit ol {
@@ -331,17 +291,14 @@ ol.comments .author {
 }
 
 #fedit label {
-    display: block;
-    width: 14em; 
     height: 11px;
-    float: left;
-    padding: 0 1em 3px 0;
+    
 	font-size: 12px; 
 }
 #fedit input[type='text'], 
 #fedit input[type='password'],
 #fedit select {
-    width: 174px;
+    width: 300px;
     border: 1px solid;
     margin: 0;
 	font-size: 12px;
@@ -354,7 +311,10 @@ ol.comments .author {
     height: 280px;
 }
 
-
+td.l {
+    width: 100px;
+    padding: 0 1em 3px 0;
+}
 /* FOOTER */
 
 #main-footer {
@@ -423,14 +383,18 @@ ul.clean, ol.clean {
 }
 .friendpaste pre {
 	overflow: none;
+	border: none;
+	background: none;
 }
 .friendpaste table.sourceTable {
 	display: inline;
 }
 
-.friendpaste td {
-	font-size: 16px;
+.friendpaste td,
+.friendpaste td * {
+	font-size: 1em;
 }
+
 /* INDEX */
 
 body#home #header p {
@@ -440,8 +404,17 @@ body#home #header p {
 
 .index article.entry {
 	display: block;
-	margin:3em 0;
+	margin:3em 5px 0;
+	float: left;
+/*	width: 85%;
+	border:1px solid #ddd;
+	padding: 0.3em;*/
 }
+
+/*.index article.aright {
+	float: right;
+}*/
+
 .index header.meta p {
 	font-size:0.846em;             /* 15px */
 	line-height:1.8; /* 25px */
@@ -464,7 +437,10 @@ body#home #header p {
 	margin-right:10px;
 }
 
-
+article.article h1 {
+    width: 500px;
+    margin: 0 auto;
+}
 /* PRINT */
 
 @media print {
@@ -524,11 +500,82 @@ header.about p {
 	text-transform:capitalize;
 }
 
-
+a img { background: none; text-decoration: none; border: none;}
 /* IE */
 
 * html body{width:40em}
 * html div.index{width:34.5em}
+
+/* markdown toolbar */
+
+.markdown_toolbar {  
+    position:relative;  
+    list-style:none;  
+    border:1px solid #d7d7d7;  
+    background-color:#F6F6F6;  
+    margin:0;  
+    padding:0;  
+    height:18px;  
+    margin-bottom:2px;  
+} 
+
+.markdown_toolbar li {  
+    list-style:none;  
+    margin:0;  
+    padding:0;  
+    float:left;  
+} 
+
+.markdown_toolbar li a {  
+    width:24px;  
+    height:16px;  
+    float:left;  
+    display:block;  
+    background-image:url("../img/markdown_icons.gif");  
+    border:1px solid #fff;  
+    border-right-color:#d7d7d7;  
+} 
+
+.markdown_toolbar li a:hover {  
+    border-color:#900;  
+} 
+
+.markdown_toolbar li span {  
+    display:none;  
+} 
+
+.markdown_toolbar li a#markdown_help_button {  
+    position:absolute;  
+    top:0;  
+    right:0;  
+    border-left-color:#d7d7d7;  
+    border-right-color:#fff;  
+} 
+
+.markdown_toolbar li a#markdown_help_button:hover {  
+    border-left-color:#900;  
+    border-right-color:#900;  
+} 
+
+#markdown_italics_button { background-position: 0 -119px; } 
+#markdown_bold_button { background-position: 0 -102px; } 
+#markdown_link_button { background-position: 0 0; } 
+#markdown_image_button { background-position: 0 -170px; } 
+#markdown_unordered_list_button { background-position: 0 -34px; } 
+#markdown_ordered_list_button { background-position: 0 -51px; } 
+#markdown_quote_button { background-position: 0 -68px; } 
+#markdown_code_button { background-position: 0 -136px; } 
+#markdown_help_button { background-position: 0 -153px; } 
+#markdown_heading_button { background-position: 0 -85px; }
+
+.resizeHandle {
+	overflow:hidden;
+	width:22px; height:5px;
+	margin-left:auto;
+	margin-right:auto;
+	background-image:url(../img/handle.png);
+	cursor:n-resize;
+}
 
 /* vim: set ft=css ts=4 sw=4 noexpandtab: */
 

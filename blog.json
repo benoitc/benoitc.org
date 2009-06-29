@@ -1,13 +1,3 @@
 {
-   "title": "Carnet d'un artisan web.",
-   "env": {
-        "benoitc.local": {
-            "static_url": "static",
-            "show_url": "show",
-            "list_url": "list",
-            "dbname": "benoitc-dev",
-            "dname": "benoitc",
-            "cookie_path": "/"
-        }
-    }
+   "title": "Carnet d'un artisan web."
 }

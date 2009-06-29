@@ -12,7 +12,7 @@
  * the server-side, but the defaults work in most cases.
  */
 var hexcase = 0;  /* hex output format. 0 - lowercase; 1 - uppercase        */
-var b64pad  = ""; /* base-64 pad character. "=" for strict RFC compliance   */
+var b64pad  = "="; /* base-64 pad character. "=" for strict RFC compliance   */
 var chrsz   = 8;  /* bits per input character. 8 - ASCII; 16 - Unicode      */
 
 /*
@@ -36,7 +36,6 @@ function md5_vm_test()
 
 /*
  * Calculate the MD5 of an array of little-endian words, and a bit length
- keep
  */
 function core_md5(x, len)
 {
@@ -198,7 +197,6 @@ function bit_rol(num, cnt)
 /*
  * Convert a string to an array of little-endian words
  * If chrsz is ASCII, characters >255 have their hi-byte silently ignored.
- keep
  */
 function str2binl(str)
 {
@@ -223,7 +221,6 @@ function binl2str(bin)
 
 /*
  * Convert an array of little-endian words to a hex string.
- keep
  */
 function binl2hex(binarray)
 {

@@ -1,20 +1,21 @@
 function(doc, req) {  
-  // !json lib.templates.edit
+  // !json templates.edit
   // !json blog
-  // !code lib.helpers.ejs.ejs
-  // !code lib.helpers.ejs.view
-  // !code lib.helpers.template2
-  // !code lib.helpers.couchapp
+  // !code vendor/inditeweb/ejs/ejs.js
+  // !code vendor/inditeweb/template.js
+  // !code vendor/inditeweb/path.js
 
-  // we only show html
-  //
-  
-
-  return template(lib.templates.edit, {
-    doc : doc,
-    docid : toJSON((doc && doc._id) || null), 
-    assets : assetPath(),
-    index : listPath('index','recent-posts',{descending:true,limit:8}),
-    env: getEnv()
-    });
+  if (doc && doc._id) 
+    var path_level = "../..";
+  else
+    var path_level = "..";
+    
+  return template(templates.edit, {
+    doc: (doc || {}),
+    docid: toJSON((doc && doc._id) || null), 
+    assets: assetPath(),
+    author_name: (doc && doc.author || ""),
+    path_level: path_level,
+    index : listPath('index','recent-posts',{descending:true,limit:8})
+  });
 }

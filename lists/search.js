@@ -1,53 +1,51 @@
-function(head, row, req, row_info) {
-  // !json lib.templates.search
+function(head, req) {
+  // !json templates.search
   // !json blog
   // !json locales
-  // !code lib.helpers.couchapp
-  // !code lib.helpers.ejs.ejs
-  // !code lib.helpers.ejs.view
-  // !code lib.helpers.template2
+  // !code vendor/inditeweb/path.js
+  // !code vendor/inditeweb/date.js
+  // !code vendor/inditeweb/ejs/ejs.js
+  // !code vendor/inditeweb/template.js
     
   var indexPath = listPath('index','recent-posts',{descending:true, limit:8});
   var feedPath = listPath('search','topics',{descending:true, limit:8, format:"atom"});
   var archivesPath = listPath('index','recent-posts',{descending:true, limit:25});
   return respondWith(req, {
     html: function() {
-        if (head) {
-            return template(lib.templates.search.head, {
+        send(template(templates.search.head, {
                 assets: assetPath(),
                 archivesPath: archivesPath,
                 feedPath: feedPath
-
-            });
-        } else if (row) {
-
-            var fcreated_at = new Date().setRFC3339(row.value.created_at).toLocaleString();
-            return template(lib.templates.search.row, {
-                    post: row.value,
-                    fcreated_at: fcreated_at,
-                    link: showPath('post', row.id),
-                    assets: assetPath()
-            });
-        } else {
-            return template(lib.templates.search.tail, {
-                archivesPath: archivesPath,
-                assets: assetPath(),
-                env: getEnv()
-            });
+        }));
+                
+                
+        var row, key;
+        while (row = getRow()) {
+          var fcreated_at = new Date().setRFC3339(row.value.created_at).toLocaleString();
+          send(template(templates.search.row, {
+                  post: row.value,
+                  fcreated_at: fcreated_at,
+                  link: showPath('post', row.id),
+                  assets: assetPath()
+          }));
         }
+        return template(templates.search.tail, {
+          archivesPath: archivesPath,
+          assets: assetPath()
+        });
     },
     atom: function() {
       // with first row in head you can do updated.
-      if (head) {
-        var f = <feed xmlns="http://www.w3.org/2005/Atom"/>;
-        f.title = blog.title;
-        f.id = makeAbsolute(req, indexPath);
-        f.link.@href = makeAbsolute(req, feedPath);
-        f.link.@rel = "self";
-        f.generator = 'benoitc.org';
-        f.updated = new Date().rfc3339();
-        return {body:f.toXMLString().replace(/\<\/feed\>/,'')};
-      } else if (row) {
+      var f = <feed xmlns="http://www.w3.org/2005/Atom"/>;
+      f.title = blog.title;
+      f.id = makeAbsolute(req, indexPath);
+      f.link.@href = makeAbsolute(req, feedPath);
+      f.link.@rel = "self";
+      f.generator = 'benoitc.org';
+      f.updated = new Date().rfc3339();
+      send(f.toXMLString().replace(/\<\/feed\>/,''));
+      
+      while (row = getRow()) {
         var entry = <entry/>;
         entry.id = makeAbsolute(req, '/'+encodeURIComponent(req.info.db_name)+'/'+encodeURIComponent(row.id));
         entry.title = row.value.title;
@@ -58,9 +56,9 @@ function(head, row, req, row_info) {
         entry.link.@href = makeAbsolute(req, showPath('post', row.id));
         entry.link.@rel = "alternate";
         return {body:entry};
-      } else {
-        return {body: "</feed>"};
       }
+        
+      return "</feed>";
     }
   })
 };
